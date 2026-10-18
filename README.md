@@ -5,6 +5,18 @@
 
 CarePulse IQ is a healthcare appointment demand analytics and decision-support platform designed to help healthcare providers understand patient booking patterns, identify demand trends, evaluate appointment channels, and plan service capacity.
 
+
+## 🌐 Live Demo
+
+**Try CarePulse IQ:** https://carepulse-iq.onrender.com
+
+CarePulse IQ is a healthcare demand analytics dashboard that helps
+understand appointment trends, booking-channel performance,
+department demand, and capacity utilization.
+
+> Note: This project currently uses synthetic demonstration data.
+
+
 ## Problem Statement
 
 Healthcare providers often struggle to understand appointment demand across booking channels and medical departments. Poor visibility into booking patterns can lead to inefficient capacity allocation, appointment overload, and unused appointment slots.
