@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePulse IQ | Healthcare Demand Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div>
+                <h2>CarePulse <span>IQ</span></h2>
+                <p>DEMAND INTELLIGENCE</p>
+            </div>
+        </div>
+
+        <div class="side-label">WORKSPACE</div>
+        <a class="nav-item active" href="#overview">▦ <span>Overview</span></a>
+        <a class="nav-item" href="#channels">◉ <span>Channel Analysis</span></a>
+        <a class="nav-item" href="#departments">▥ <span>Department Demand</span></a>
+        <a class="nav-item" href="#insights">✧ <span>Business Insights</span></a>
+
+        <div class="sidebar-bottom">
+            <div class="live-indicator"><span></span> Analytics engine active</div>
+            <p>CARE PULSE IQ · 2026</p>
+            <p class="sidebar-note">Synthetic demonstration data</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">HEALTHCARE ANALYTICS PLATFORM</p>
+                <h1>Demand Overview</h1>
+                <p class="subtitle">Understand appointment demand and channel performance.</p>
+            </div>
+            <div class="topbar-right">
+                <div class="status-pill"><span></span> SYSTEM ONLINE</div>
+                <button class="refresh-btn" onclick="loadDashboard()">↻ Refresh data</button>
+            </div>
+        </header>
+
+        <section class="welcome-strip">
+            <div>
+                <p class="welcome-label">YOUR DATA. CLEARER DECISIONS.</p>
+                <h2>Turn appointment data into actionable insights.</h2>
+                <p>Explore demand patterns, booking channels and operational opportunities.</p>
+            </div>
+            <div class="welcome-symbol">✚</div>
+        </section>
+        
+<section class="filter-panel">
+    <div class="filter-title">
+        <div>
+            <h2>Explore your data</h2>
+            <p>Filter the dashboard by booking channel and department.</p>
+        </div>
+        <button class="reset-btn" onclick="resetFilters()">Reset filters ↺</button>
+    </div>
+
+    <div class="filter-controls">
+        <div class="filter-field">
+            <label for="channelFilter">BOOKING CHANNEL</label>
+            <select id="channelFilter">
+                <option value="All">All channels</option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="departmentFilter">DEPARTMENT</label>
+            <select id="departmentFilter">
+                <option value="All">All departments</option>
+            </select>
+        </div>
+
+        <button class="apply-btn" onclick="loadDashboard()">
+            Apply filters
+            <button class="export-btn" onclick="exportReports()">
+    ↓ Download reports
+</button>
+        </button>
+    </div>
+</section>
+
+
+        <section id="overview">
+            <div class="section-heading">
+                <div>
+                    <h2>Performance snapshot</h2>
+                    <p>Your key appointment metrics at a glance</p>
+                </div>
+                <span class="data-label">LIVE ANALYSIS</span>
+            </div>
+
+            <div class="metric-grid">
+                <article class="metric-card">
+                    <div class="metric-top"><span>Total appointments</span><span class="metric-icon teal">▦</span></div>
+                    <h3 id="totalAppointments">—</h3>
+                    <p>All recorded appointments</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>Completed visits</span><span class="metric-icon green">✓</span></div>
+                    <h3 id="completedAppointments">—</h3>
+                    <p>Successfully completed</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>No-show appointments</span><span class="metric-icon orange">!</span></div>
+                    <h3 id="noShowAppointments">—</h3>
+                    <p>Appointments not attended</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top"><span>No-show rate</span><span class="metric-icon purple">％</span></div>
+                    <h3 id="noShowRate">—</h3>
+                    <p>Share of total appointments</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="chart-grid" id="channels">
+            <article class="panel">
+                <div class="panel-heading">
+                    <div><h2>Booking channel performance</h2><p>Appointments and observed no-show rates</p></div>
+                </div>
+                <div id="channelChart" class="chart"></div>
+            </article>
+
+            <article class="panel" id="departments">
+                <div class="panel-heading">
+                    <div><h2>Department demand</h2><p>Appointment distribution by department</p></div>
+                </div>
+                <div id="departmentChart" class="chart"></div>
+            </article>
+        </section>
+
+        <section class="panel demand-panel">
+            <div class="panel-heading">
+                <div><h2>Appointment demand over time</h2><p>Daily appointment volume across the dataset</p></div>
+            </div>
+            <div id="dailyChart" class="chart chart-wide"></div>
+        </section>
+
+        <section class="panel weekday-panel">
+            <div class="panel-heading">
+                <div><h2>Weekly demand pattern</h2><p>Which days have the highest appointment volume?</p></div>
+            </div>
+            <div id="weekdayChart" class="chart chart-wide"></div>
+        </section>
+
+        <section id="insights" class="insights-section">
+            <div class="section-heading">
+                <div><h2>Intelligence & recommendations</h2><p>Automatically generated observations from the dataset</p></div>
+                <span class="insight-tag">✧ AI-ASSISTED ANALYTICS</span>
+            </div>
+            <div id="insightsList" class="insight-grid">
+                <div class="loading-card">Generating business insights...</div>
+            </div>
+        </section>
+
+        <footer>
+            <span>CarePulse IQ · Healthcare Demand Intelligence</span>
+            <span>Demonstration project using synthetic data · Not for clinical decisions</span>
+        </footer>
+    </main>
+</div>
+
+<section class="panel demand-panel" id="capacity">
+    <div class="panel-heading">
+        <div>
+            <h2>Capacity Planning & Alerts</h2>
+            <p>Compare appointment demand with assumed daily capacity</p>
+        </div>
+    </div>
+
+    <div class="capacity-summary">
+        <div>
+            <span>DAILY CAPACITY</span>
+            <strong id="dailyCapacity">25</strong>
+        </div>
+        <div>
+            <span>DAYS OVER CAPACITY</span>
+            <strong id="overCapacityDays">—</strong>
+        </div>
+        <div>
+            <span>SHORTAGE SLOTS</span>
+            <strong id="shortageSlots">—</strong>
+        </div>
+    </div>
+
+    <div id="capacityChart" class="chart chart-wide"></div>
+
+    <h3 class="alert-heading">Capacity alerts</h3>
+    <div class="table-wrapper">
+        <table class="capacity-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Demand</th>
+                    <th>Capacity</th>
+                    <th>Shortage</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="capacityTableBody">
+                <tr><td colspan="5">Loading capacity analysis...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<a class="nav-item" href="#capacity">▤ <span>Capacity Planning</span></a>
+<section class="panel demand-panel" id="forecast">
+    <div class="panel-heading">
+        <div>
+            <h2>14-Day Demand Forecast</h2>
+            <p>Machine-learning estimates of upcoming appointment volume</p>
+        </div>
+    </div>
+
+    <div class="forecast-summary">
+        <div>
+            <span>MODEL</span>
+            <strong>Random Forest Regressor</strong>
+        </div>
+        <div>
+            <span>TEST MAE</span>
+            <strong id="forecastMAE">Calculating...</strong>
+        </div>
+        <div>
+            <span>FORECAST PERIOD</span>
+            <strong>Next 14 days</strong>
+        </div>
+    </div>
+
+    <div id="forecastChart" class="chart chart-wide"></div>
+    <p class="forecast-note">
+        Forecasts are experimental estimates based on synthetic historical data.
+        They are not guaranteed appointment counts.
+    </p>
+</section>
+<a class="nav-item" href="#forecast">↗ <span>Demand Forecast</span></a>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
